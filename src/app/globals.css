@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand navy comes straight from the logo (#2d3e50); gold from the academy's social graphics. */
+  --color-ink: #1b2836;
+  --color-navy: #2d3e50;
+  --color-slate: #3e5368;
+  --color-steel: #4b6987;
+  --color-mist: #e6ecf2;
+  --color-gold: #e3b341;
+  --color-gold-light: #f3d27a;
+  --color-bronze: #8a6412;
+  --color-cream: #fbf8f1;
+  --color-sand: #f3ecdd;
+  --color-line: #e4dccb;
+  --color-stone: #566270;
+}
+
+@theme inline {
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+  --font-arabic: var(--font-amiri);
+  --color-border: var(--color-line);
+  --color-ring: var(--color-steel);
+}
+
+/* Eight-point star lattice, drawn as an SVG tile. */
+@utility pattern-on-dark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23f3d27a' stroke-opacity='0.14' stroke-width='1'%3E%3Crect x='24' y='24' width='32' height='32'/%3E%3Crect x='24' y='24' width='32' height='32' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='9'/%3E%3Cpath d='M40 0v17.4M40 62.6V80M0 40h17.4M62.6 40H80'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@utility pattern-on-light {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%232d3e50' stroke-opacity='0.07' stroke-width='1'%3E%3Crect x='24' y='24' width='32' height='32'/%3E%3Crect x='24' y='24' width='32' height='32' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='9'/%3E%3Cpath d='M40 0v17.4M40 62.6V80M0 40h17.4M62.6 40H80'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* CSS-only entrance for above-the-fold content, so it never waits on hydration. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
+
+  &::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+  ::selection {
+    background: var(--color-gold-light);
+    color: var(--color-ink);
+  }
+  [lang="ar"] {
+    font-family: var(--font-amiri), serif;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
