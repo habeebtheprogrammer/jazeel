@@ -46,7 +46,7 @@ export function SponsorForm() {
         error={error}
         note="We'll get back to you with the sponsorship details, in shaa Allah."
         submitLabel="Sponsor a student"
-        sentMessage="Jazakum Allahu khairan! We've received your sponsorship enquiry and will be in touch shortly."
+        sentMessage="Jazakum Allahu khairan! We've received your sponsorship enquiry and a confirmation is on its way to your inbox. We'll be in touch shortly, in shaa Allah."
       />
     </form>
   );

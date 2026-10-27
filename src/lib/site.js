@@ -10,7 +10,7 @@ export const site = {
 
   contact: {
     // International format without "+" or spaces, e.g. "2348012345678"
-    whatsapp: "",
+    whatsapp: "2348171961745",
     email: "jazeelquranacademy@gmail.com",
     phone: "",
   },

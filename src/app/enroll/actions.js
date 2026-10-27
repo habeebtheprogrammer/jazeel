@@ -1,26 +1,24 @@
 "use server";
 
 import { formatPrice, getPlan, programmes } from "@/lib/content";
-import { readFields, sendSiteEmail } from "@/lib/mail";
-import { site } from "@/lib/site";
+import { isEmail, readFields, sendSubmission } from "@/lib/mail";
 
-const required = ["name", "country", "age", "programme"];
-const fields = [...required, "learner", "level", "plan", "schedule", "contact", "message"];
+const required = ["name", "email", "country", "age", "programme"];
+const fields = [...required, "learner", "level", "plan", "schedule", "phone", "message"];
 
-function buildMessage(data) {
+function buildDetails(data) {
   const programme = programmes.find((p) => p.slug === data.programme);
   const plan = getPlan(data.plan);
   const lines = [
-    `New enrollment enquiry from the ${site.name} website.`,
-    "",
     `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    data.phone ? `Phone: ${data.phone}` : null,
     `Learner: ${data.learner} (age ${data.age})`,
     `Country: ${data.country}`,
     `Programme: ${programme ? programme.name : "Not sure — please advise"}`,
     plan ? `Plan: ${plan.name} (${formatPrice(plan.price)}/month)` : null,
     data.level ? `Current level: ${data.level}` : null,
     data.schedule ? `Preferred schedule: ${data.schedule}` : null,
-    data.contact ? `Contact: ${data.contact}` : null,
     data.message ? `\n${data.message}` : null,
   ];
   return lines.filter((line) => line !== null).join("\n");
@@ -34,10 +32,15 @@ export async function sendEnquiry(input) {
   if (required.some((key) => !data[key])) {
     return { ok: false, error: "Please fill in all the required fields." };
   }
+  if (!isEmail(data.email)) {
+    return { ok: false, error: "Please enter a valid email address." };
+  }
 
-  return sendSiteEmail({
+  return sendSubmission({
+    kind: "enrollment enquiry",
     subject: `Enrollment enquiry — ${data.name}`,
-    text: buildMessage(data),
-    replyTo: data.contact,
+    name: data.name,
+    email: data.email,
+    details: buildDetails(data),
   });
 }

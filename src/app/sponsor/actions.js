@@ -1,7 +1,6 @@
 "use server";
 
-import { isEmail, readFields, sendSiteEmail } from "@/lib/mail";
-import { site } from "@/lib/site";
+import { isEmail, readFields, sendSubmission } from "@/lib/mail";
 
 const fields = ["name", "email", "country", "students", "message"];
 
@@ -18,8 +17,6 @@ export async function sendSponsorEnquiry(input) {
   }
 
   const lines = [
-    `New student sponsorship enquiry from the ${site.name} website.`,
-    "",
     `Name: ${data.name}`,
     `Email: ${data.email}`,
     data.country ? `Country: ${data.country}` : null,
@@ -27,9 +24,11 @@ export async function sendSponsorEnquiry(input) {
     data.message ? `\n${data.message}` : null,
   ];
 
-  return sendSiteEmail({
+  return sendSubmission({
+    kind: "sponsorship enquiry",
     subject: `Sponsorship enquiry — ${data.name}`,
-    text: lines.filter((line) => line !== null).join("\n"),
-    replyTo: data.email,
+    name: data.name,
+    email: data.email,
+    details: lines.filter((line) => line !== null).join("\n"),
   });
 }

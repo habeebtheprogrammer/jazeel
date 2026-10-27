@@ -48,6 +48,19 @@ export function EnrollForm({ defaultProgramme = "", defaultPlan = "" }) {
         <Field label="Your name" required>
           <input name="name" required autoComplete="name" className={fieldClass} placeholder="Full name" />
         </Field>
+        <Field label="Email address" required>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            className={fieldClass}
+            placeholder="We'll send a confirmation here"
+          />
+        </Field>
+        <Field label="Phone / WhatsApp (optional)">
+          <input name="phone" type="tel" autoComplete="tel" className={fieldClass} placeholder="Include your country code" />
+        </Field>
         <Field label="Country of residence" required>
           <input name="country" required autoComplete="country-name" className={fieldClass} placeholder="e.g. United Kingdom" />
         </Field>
@@ -92,12 +105,11 @@ export function EnrollForm({ defaultProgramme = "", defaultPlan = "" }) {
             ))}
           </select>
         </Field>
-        <Field label="Preferred days & times">
-          <input name="schedule" className={fieldClass} placeholder="e.g. Weekends, after 4pm GMT" />
-        </Field>
-        <Field label="Email or phone (optional)">
-          <input name="contact" autoComplete="email" className={fieldClass} placeholder="So we can follow up" />
-        </Field>
+        <div className="sm:col-span-2">
+          <Field label="Preferred days & times">
+            <input name="schedule" className={fieldClass} placeholder="e.g. Weekends, after 4pm GMT" />
+          </Field>
+        </div>
         <div className="sm:col-span-2">
           <Field label="Anything we should know?">
             <textarea
@@ -113,9 +125,9 @@ export function EnrollForm({ defaultProgramme = "", defaultPlan = "" }) {
       <FormFooter
         status={status}
         error={error}
-        note="Your enquiry goes straight to our team — we'll be in touch soon, in shaa Allah."
+        note="Your enquiry goes straight to our team, and we'll email you a confirmation."
         submitLabel="Send enquiry"
-        sentMessage="Jazakum Allahu khairan! Your enquiry has been sent and we'll get back to you shortly."
+        sentMessage="Jazakum Allahu khairan! Your enquiry has been sent and a confirmation is on its way to your inbox. We'll get back to you shortly, in shaa Allah."
       />
     </form>
   );
