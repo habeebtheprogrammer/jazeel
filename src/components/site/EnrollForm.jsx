@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Mail } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+import { ArrowRight, LoaderCircle } from "lucide-react";
+import { sendEnquiry } from "@/app/enroll/actions";
 import { Button } from "@/components/ui/button";
 import { programmes } from "@/lib/content";
-import { site, whatsappLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const learnerOptions = ["Myself", "My child", "Family members"];
@@ -32,41 +31,28 @@ function Field({ label, required, children }) {
   );
 }
 
-function buildMessage(data) {
-  const programme = programmes.find((p) => p.slug === data.programme);
-  const lines = [
-    `Assalamu alaikum, I'd like to enroll at ${site.name}.`,
-    "",
-    `Name: ${data.name}`,
-    `Learner: ${data.learner} (age ${data.age})`,
-    `Country: ${data.country}`,
-    `Programme: ${programme ? programme.name : "Not sure — please advise"}`,
-    data.level ? `Current level: ${data.level}` : null,
-    data.schedule ? `Preferred schedule: ${data.schedule}` : null,
-    data.contact ? `Contact: ${data.contact}` : null,
-    data.message ? `\n${data.message}` : null,
-  ];
-  return lines.filter((line) => line !== null).join("\n");
-}
-
 export function EnrollForm({ defaultProgramme = "" }) {
   const [learner, setLearner] = useState(learnerOptions[1]);
-  const [sent, setSent] = useState(null);
-  const canWhatsapp = Boolean(site.contact.whatsapp);
-  const canEmail = Boolean(site.contact.email);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    const message = buildMessage({ ...data, learner });
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
 
-    if (canWhatsapp) {
-      window.open(whatsappLink(message), "_blank", "noopener,noreferrer");
-      setSent("whatsapp");
-    } else if (canEmail) {
-      const subject = encodeURIComponent(`Enrollment enquiry — ${data.name}`);
-      window.location.href = `mailto:${site.contact.email}?subject=${subject}&body=${encodeURIComponent(message)}`;
-      setSent("email");
+    setStatus("sending");
+    const result = await sendEnquiry({ ...data, learner }).catch(() => ({
+      ok: false,
+      error: "We couldn't send your enquiry right now. Please try again later.",
+    }));
+
+    if (result.ok) {
+      form.reset();
+      setStatus("sent");
+    } else {
+      setError(result.error);
+      setStatus("error");
     }
   };
 
@@ -150,30 +136,34 @@ export function EnrollForm({ defaultProgramme = "" }) {
         </div>
       </div>
 
+      {/* Honeypot for bots — hidden from people and screen readers. */}
+      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+
       <div className="mt-8 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-        {canWhatsapp || canEmail ? (
-          <>
-            <p className="text-sm text-stone">
-              {canWhatsapp
-                ? "We'll open WhatsApp with your details filled in — just press send."
-                : "We'll open your email app with your details filled in — just press send."}
-            </p>
-            <Button type="submit" size="lg">
-              {canWhatsapp ? <FaWhatsapp className="size-5" /> : <Mail className="size-5" />}
+        <p className="text-sm text-stone">
+          Your enquiry goes straight to our team — we&apos;ll be in touch soon, in shaa Allah.
+        </p>
+        <Button type="submit" size="lg" disabled={status === "sending"}>
+          {status === "sending" ? (
+            <>
+              <LoaderCircle className="size-5 animate-spin" /> Sending…
+            </>
+          ) : (
+            <>
               Send enquiry <ArrowRight />
-            </Button>
-          </>
-        ) : (
-          <p className="text-sm text-stone">
-            Online enrollment is opening soon. Please check back shortly, in shaa Allah.
-          </p>
-        )}
+            </>
+          )}
+        </Button>
       </div>
 
-      {sent && (
+      {status === "sent" && (
         <p role="status" className="mt-6 rounded-xl bg-mist px-5 py-4 text-sm text-navy">
-          Jazakum Allahu khairan! Your enquiry is ready in {sent === "whatsapp" ? "WhatsApp" : "your email app"}.
-          If nothing opened, please check your pop-up settings and try again.
+          Jazakum Allahu khairan! Your enquiry has been sent and we&apos;ll get back to you shortly.
+        </p>
+      )}
+      {status === "error" && (
+        <p role="alert" className="mt-6 rounded-xl border border-bronze/30 bg-cream px-5 py-4 text-sm text-navy">
+          {error}
         </p>
       )}
     </form>
