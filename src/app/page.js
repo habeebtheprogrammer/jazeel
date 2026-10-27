@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroArch } from "@/components/site/HeroArch";
+import { PricingPlans } from "@/components/site/Pricing";
 import { Reveal } from "@/components/site/Reveal";
 import { CtaBand, ProgrammeCard, SectionHeading, SubjectsGrid } from "@/components/site/Sections";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -208,7 +209,7 @@ export default function HomePage() {
           >
             <p>{programmesIntro[0]}</p>
           </SectionHeading>
-          <div className="mt-16 grid gap-5 lg:grid-cols-3">
+          <div className="mt-16 grid gap-5 md:grid-cols-2">
             {programmes.map((programme, i) => (
               <ProgrammeCard key={programme.slug} programme={programme} tone="dark" index={i} />
             ))}
@@ -267,6 +268,25 @@ export default function HomePage() {
       )}
 
       <Testimonials video={reviewVideo} />
+
+      {/* Pricing */}
+      <section className="bg-sand">
+        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-32">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <SectionHeading eyebrow="Monthly plans" title="Less than the cost of your daily coffee.">
+              <p>Nurture your connection with the Quran every day with personalized, one-on-one sessions.</p>
+            </SectionHeading>
+            <Reveal delay={0.1}>
+              <Button asChild variant="outline">
+                <Link href="/pricing">
+                  Pricing details <ArrowRight />
+                </Link>
+              </Button>
+            </Reveal>
+          </div>
+          <PricingPlans className="mt-14" />
+        </div>
+      </section>
 
       <CtaBand />
     </>

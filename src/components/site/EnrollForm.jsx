@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, LoaderCircle } from "lucide-react";
 import { sendEnquiry } from "@/app/enroll/actions";
-import { Button } from "@/components/ui/button";
-import { programmes } from "@/lib/content";
+import { Field, FormFooter, fieldClass, useFormAction } from "@/components/site/Form";
+import { formatPrice, plans, programmes } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 const learnerOptions = ["Myself", "My child", "Family members"];
@@ -16,48 +15,13 @@ const levelOptions = [
   "Already memorizing",
 ];
 
-const fieldClass =
-  "mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink placeholder:text-stone/60 transition-colors focus:border-steel focus:bg-white focus:outline-none focus:ring-4 focus:ring-steel/10";
-
-function Field({ label, required, children }) {
-  return (
-    <label className="block">
-      <span className="text-sm font-semibold text-navy">
-        {label}
-        {required && <span className="text-bronze"> *</span>}
-      </span>
-      {children}
-    </label>
-  );
-}
-
-export function EnrollForm({ defaultProgramme = "" }) {
+export function EnrollForm({ defaultProgramme = "", defaultPlan = "" }) {
   const [learner, setLearner] = useState(learnerOptions[1]);
-  const [status, setStatus] = useState("idle");
-  const [error, setError] = useState("");
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form));
-
-    setStatus("sending");
-    const result = await sendEnquiry({ ...data, learner }).catch(() => ({
-      ok: false,
-      error: "We couldn't send your enquiry right now. Please try again later.",
-    }));
-
-    if (result.ok) {
-      form.reset();
-      setStatus("sent");
-    } else {
-      setError(result.error);
-      setStatus("error");
-    }
-  };
+  const { status, error, onSubmit } = useFormAction(sendEnquiry);
 
   return (
     <form onSubmit={onSubmit} className="rounded-[2rem] border border-line bg-white p-6 sm:p-10">
+      <input type="hidden" name="learner" value={learner} />
       <fieldset>
         <legend className="text-sm font-semibold text-navy">Who is learning?</legend>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -118,6 +82,16 @@ export function EnrollForm({ defaultProgramme = "" }) {
             <option value="unsure">Not sure — please advise</option>
           </select>
         </Field>
+        <Field label="Monthly plan">
+          <select name="plan" defaultValue={defaultPlan} className={fieldClass}>
+            <option value="">Not sure yet</option>
+            {plans.map((plan) => (
+              <option key={plan.id} value={plan.id}>
+                {plan.name} — {formatPrice(plan.price)}/month
+              </option>
+            ))}
+          </select>
+        </Field>
         <Field label="Preferred days & times">
           <input name="schedule" className={fieldClass} placeholder="e.g. Weekends, after 4pm GMT" />
         </Field>
@@ -136,36 +110,13 @@ export function EnrollForm({ defaultProgramme = "" }) {
         </div>
       </div>
 
-      {/* Honeypot for bots — hidden from people and screen readers. */}
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
-
-      <div className="mt-8 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-stone">
-          Your enquiry goes straight to our team — we&apos;ll be in touch soon, in shaa Allah.
-        </p>
-        <Button type="submit" size="lg" disabled={status === "sending"}>
-          {status === "sending" ? (
-            <>
-              <LoaderCircle className="size-5 animate-spin" /> Sending…
-            </>
-          ) : (
-            <>
-              Send enquiry <ArrowRight />
-            </>
-          )}
-        </Button>
-      </div>
-
-      {status === "sent" && (
-        <p role="status" className="mt-6 rounded-xl bg-mist px-5 py-4 text-sm text-navy">
-          Jazakum Allahu khairan! Your enquiry has been sent and we&apos;ll get back to you shortly.
-        </p>
-      )}
-      {status === "error" && (
-        <p role="alert" className="mt-6 rounded-xl border border-bronze/30 bg-cream px-5 py-4 text-sm text-navy">
-          {error}
-        </p>
-      )}
+      <FormFooter
+        status={status}
+        error={error}
+        note="Your enquiry goes straight to our team — we'll be in touch soon, in shaa Allah."
+        submitLabel="Send enquiry"
+        sentMessage="Jazakum Allahu khairan! Your enquiry has been sent and we'll get back to you shortly."
+      />
     </form>
   );
 }

@@ -2,7 +2,16 @@ import { programmes } from "@/lib/content";
 import { site } from "@/lib/site";
 
 export default function sitemap() {
-  const paths = ["", "/about", "/programmes", ...programmes.map((p) => `/programmes/${p.slug}`), "/enroll"];
+  const paths = [
+    "",
+    "/about",
+    "/programmes",
+    ...programmes.map((p) => `/programmes/${p.slug}`),
+    "/pricing",
+    "/sponsor",
+    "/faq",
+    "/enroll",
+  ];
   return paths.map((path) => ({
     url: `${site.url}${path}`,
     lastModified: new Date(),

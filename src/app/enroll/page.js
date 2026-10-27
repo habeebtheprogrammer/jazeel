@@ -2,7 +2,7 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 import { EnrollForm } from "@/components/site/EnrollForm";
 import { Reveal } from "@/components/site/Reveal";
 import { PageHero } from "@/components/site/Sections";
-import { getProgramme, verses } from "@/lib/content";
+import { getPlan, getProgramme, verses } from "@/lib/content";
 import { site, whatsappLink } from "@/lib/site";
 
 export const metadata = {
@@ -19,8 +19,9 @@ const nextSteps = [
 ];
 
 export default async function EnrollPage({ searchParams }) {
-  const { programme } = await searchParams;
+  const { programme, plan } = await searchParams;
   const defaultProgramme = getProgramme(programme)?.slug ?? "";
+  const defaultPlan = getPlan(plan)?.id ?? "";
   const whatsapp = whatsappLink();
   const { email, phone } = site.contact;
 
@@ -35,7 +36,7 @@ export default async function EnrollPage({ searchParams }) {
 
       <section className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[1.6fr_1fr] lg:gap-14 lg:py-24">
         <Reveal>
-          <EnrollForm defaultProgramme={defaultProgramme} />
+          <EnrollForm defaultProgramme={defaultProgramme} defaultPlan={defaultPlan} />
         </Reveal>
 
         <Reveal delay={0.1} className="space-y-5">

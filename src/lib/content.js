@@ -1,13 +1,20 @@
 import {
+  AudioLines,
   BookOpen,
   BookOpenText,
+  CalendarClock,
   ChartLine,
   Earth,
   Gauge,
+  GraduationCap,
+  HandCoins,
+  HeartHandshake,
+  Languages,
   Layers,
   Moon,
   Sparkles,
   Sprout,
+  Sunrise,
   UserRound,
 } from "lucide-react";
 
@@ -225,11 +232,162 @@ export const programmes = [
     aim: "Our goal is to nurture well-rounded Muslims whose knowledge is reflected in their character, conduct, and contribution to society.",
     finder: "would benefit from guidance in character, confidence and purpose",
   },
+  {
+    slug: "arabic-proficiency",
+    number: "04",
+    icon: Languages,
+    stage: "One-year intensive",
+    name: "The Intensive Arabic Proficiency Course",
+    shortName: "Arabic Proficiency",
+    tagline: "The missing link between reading the Quran and understanding its message.",
+    audience: "Learners who aspire to understand the Quran beyond recitation and translation.",
+    duration: "One year, intensive",
+    summary:
+      "A one-year intensive programme in Arabic vocabulary, grammar and comprehension — applied to selected Quranic passages.",
+    path: ["Vocabulary", "Grammar", "Structure", "Comprehension"],
+    intro: [
+      "Learning the language of the Quran opens the door to a deeper appreciation of its message.",
+      "At Jazeel Quran Academy, we have developed an intensive, one-year Arabic proficiency programme for learners who aspire to understand the Quran beyond recitation and translation.",
+      "Through a structured learning approach, you will progressively develop your knowledge of Arabic vocabulary, grammar, sentence structure, and comprehension, with practical application to selected Quranic passages.",
+    ],
+    focusTitle: "You will progressively develop",
+    focus: [
+      "Arabic vocabulary",
+      "Arabic grammar",
+      "Sentence structure",
+      "Comprehension",
+      "Practical application to selected Quranic passages",
+      "Understanding beyond recitation and translation",
+    ],
+    closing: [],
+    aim: "Our goal is to nurture a deeper connection with the Quran, helping you move beyond recitation to understanding its meanings, reflecting on its message, and embodying its teachings, bi'idhnillah.",
+    finder: "wants to understand the Quran in its own language, beyond recitation and translation",
+  },
 ];
 
 export function getProgramme(slug) {
   return programmes.find((p) => p.slug === slug);
 }
+
+// Monthly plans for personalized one-on-one Quran sessions. `was` is the price before the saving.
+export const plans = [
+  { id: "2-days", name: "2 Days Per Week", price: 45, classes: 8 },
+  { id: "3-days", name: "3 Days Per Week", price: 65, was: 67.5, save: "4%", classes: 12 },
+  { id: "5-days", name: "5 Days Per Week", price: 99, was: 112.5, save: "12%", classes: 20, popular: true },
+];
+
+export const sessionLength = "45–60 minutes";
+
+export function getPlan(id) {
+  return plans.find((p) => p.id === id);
+}
+
+export function formatPrice(amount) {
+  return `USD ${Number.isInteger(amount) ? amount : amount.toFixed(2)}`;
+}
+
+export const planIncludes = [
+  {
+    icon: GraduationCap,
+    title: "Qualified, experienced teachers",
+    text: "Learn with carefully selected, qualified Quran teachers, with male and female tutors available.",
+  },
+  {
+    icon: CalendarClock,
+    title: "Class times that suit you",
+    text: "Choose from available class times that suit your lifestyle, including mornings, evenings, and weekends.",
+  },
+  {
+    icon: AudioLines,
+    title: "Live, personal feedback",
+    text: "Live, one-on-one sessions with real-time feedback and Tajweed correction tailored to your learning needs — something apps and recorded videos can't provide.",
+  },
+];
+
+export const sponsorship = {
+  achievements: [
+    "Learn to recite Surah Al-Fatihah correctly for their daily prayers.",
+    "Improve their Quran recitation with proper Tajweed.",
+    "Memorize portions of the Quran, building a lifelong connection with the Book of Allah.",
+  ],
+  beneficiaries: [
+    {
+      icon: Sunrise,
+      title: "New Muslims",
+      text: "Seeking to build a strong foundation in their faith and begin their journey with the Quran.",
+    },
+    {
+      icon: HandCoins,
+      title: "Students in financial need",
+      text: "From financially disadvantaged backgrounds, who desire to learn the Quran but have limited access to affordable learning opportunities.",
+    },
+    {
+      icon: HeartHandshake,
+      title: "Orphans",
+      text: "In need of educational support, whose circumstances may limit their access to structured Quranic learning.",
+    },
+  ],
+};
+
+export const faqs = [
+  {
+    question: "Who are your classes for?",
+    answer:
+      "Muslims of all ages, wherever they are in the world — from young children to adults. Every learner is placed according to their age, current level, goals and location.",
+  },
+  {
+    question: "Are the classes live?",
+    answer:
+      "Yes. Classes are live, one-on-one online sessions with a qualified teacher, so you get real-time feedback and Tajweed correction tailored to your needs.",
+  },
+  {
+    question: "Do you have male and female teachers?",
+    answer: "Yes. Our teachers are carefully selected and qualified, and both male and female tutors are available.",
+  },
+  {
+    question: "How much do classes cost?",
+    answer:
+      "Plans start at USD 45/month for 2 days a week (8 classes). 3 days a week is USD 65/month (12 classes), and 5 days a week is USD 99/month (20 classes).",
+    link: { href: "/pricing", label: "See all plans" },
+    pricing: true,
+  },
+  {
+    question: "How long is each class?",
+    answer: `Each one-on-one session lasts ${sessionLength}.`,
+    pricing: true,
+  },
+  {
+    question: "Can I choose my class times?",
+    answer:
+      "Yes. Choose from available class times that suit your lifestyle, including mornings, evenings, and weekends.",
+    pricing: true,
+  },
+  {
+    question: "We can't read the Quran yet. Where do we start?",
+    answer:
+      "With The Quran Foundations Class. It's designed for learners with little or no prior knowledge — starting from the Quranic letters and building up to fluent recitation with basic Tajweed.",
+    link: { href: "/programmes/quran-foundations", label: "About Quran Foundations" },
+  },
+  {
+    question: "Do you teach Arabic?",
+    answer:
+      "Yes. Our Intensive Arabic Proficiency Course is a one-year programme for learners who want to understand the Quran beyond recitation and translation — covering vocabulary, grammar, sentence structure and comprehension, applied to selected Quranic passages.",
+    link: { href: "/programmes/arabic-proficiency", label: "About the Arabic course" },
+  },
+  {
+    question: "How do I enroll?",
+    answer:
+      "Fill in our short enrollment form with the learner's age, level and goals. We'll review it, recommend the right programme and class, and the learner begins live classes with a dedicated teacher.",
+    link: { href: "/enroll", label: "Enroll now" },
+    pricing: true,
+  },
+  {
+    question: "How can I sponsor a student?",
+    answer:
+      "Through our Sadaqah Jariyah sponsorship, you can fund Quran classes for new Muslims, students in financial need and orphans. Send us your details on the sponsorship page and we'll be in touch.",
+    link: { href: "/sponsor", label: "Sponsor a student" },
+  },
+];
 
 export const steps = [
   {

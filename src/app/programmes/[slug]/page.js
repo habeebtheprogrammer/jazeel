@@ -32,7 +32,9 @@ export default async function ProgrammePage({ params }) {
   const atAGlance = [
     ["Who it's for", programme.audience],
     ["Format", "Live, interactive online classes"],
-    ["Pace", "Personalized to each learner's ability, goals and schedule"],
+    programme.duration
+      ? ["Duration", programme.duration]
+      : ["Pace", "Personalized to each learner's ability, goals and schedule"],
     ["Support", "Ongoing progress tracking and guidance"],
   ];
 
@@ -156,7 +158,7 @@ export default async function ProgrammePage({ params }) {
           <Reveal>
             <h2 className="font-display text-3xl text-navy sm:text-4xl">Continue the journey</h2>
           </Reveal>
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {others.map((p, i) => (
               <ProgrammeCard key={p.slug} programme={p} index={i} />
             ))}

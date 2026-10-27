@@ -57,7 +57,9 @@ export const site = {
 export const nav = [
   { href: "/about", label: "About" },
   { href: "/programmes", label: "Programmes" },
-  { href: "/#how-it-works", label: "How it works" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/sponsor", label: "Sponsor a student" },
+  { href: "/faq", label: "FAQ" },
   { href: "/enroll", label: "Contact" },
 ];
 

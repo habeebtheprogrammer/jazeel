@@ -72,7 +72,10 @@ export function Footer() {
           <FooterColumn title="Academy">
             <FooterLink href="/about">About us</FooterLink>
             <FooterLink href="/programmes">Programmes</FooterLink>
+            <FooterLink href="/pricing">Pricing</FooterLink>
             <FooterLink href="/#how-it-works">How it works</FooterLink>
+            <FooterLink href="/sponsor">Sponsor a student</FooterLink>
+            <FooterLink href="/faq">FAQ</FooterLink>
             <FooterLink href="/enroll">Enroll</FooterLink>
           </FooterColumn>
 

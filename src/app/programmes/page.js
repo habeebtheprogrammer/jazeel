@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const metadata = {
   title: "Programmes",
   description:
-    "Explore Jazeel Quran Academy's programmes: The Quran Foundations Class, The Quran Stewards Memorization Program, and The Moral & Mentorship Builders Program.",
+    "Explore Jazeel Quran Academy's programmes: The Quran Foundations Class, The Quran Stewards Memorization Program, The Moral & Mentorship Builders Program, and The Intensive Arabic Proficiency Course.",
   alternates: { canonical: "/programmes" },
 };
 
@@ -92,7 +92,7 @@ export default function ProgrammesPage() {
       <section className="bg-sand">
         <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-28">
           <SectionHeading eyebrow="Not sure where to start?" title="Find the right programme for your learner." />
-          <div className="mt-14 grid gap-4 lg:grid-cols-3">
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {programmes.map((programme, i) => (
               <Reveal key={programme.slug} delay={i * 0.08} className="h-full">
                 <Link
